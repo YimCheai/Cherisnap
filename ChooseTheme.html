@@ -1,11 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <title>이미지 박스 추가</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .container {
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
+    .left, .right {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      position: relative;
+    }
+    .left {
+      background-color: #FFFAD7;
+    }
+    .right {
+      background-color: #FFFEF4;
+    }
+    .image-box {
+      width: 424px;
+      height: 80px;
+      background: url('img/image5.png') center / cover no-repeat;
+      flex-shrink: 0;
+    }
+    .text-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 50px;
+    }
+    .with-text {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 55px;
+      font-weight: 200;
+      color: #000;
+    }
+    .plus-text {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 80px;
+      font-weight: 100;
+      color: #000;
+    }
+    .choose-image {
+      width: 355px;
+      height: 38px;
+      background: url('img/choose.png') center / contain no-repeat;
+      flex-shrink: 0;
+      position: absolute;
+      bottom: 50px;
+      cursor: pointer;
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    
+  <div class="container">
+    <div class="left">
+      <div class="image-box"></div>
+      <div class="text-box">
+        <div class="with-text">with</div>
+        <div class="plus-text">+</div>
+      </div>
+      <a href="frameSelect.html" class="choose-image"></a>
+    </div>
+    <div class="right">
+      <div class="image-box"></div>
+      <div class="text-box">
+      </div>
+      <a href="frameSelect.html" class="choose-image"></a>
+    </div>
+  </div>
 </body>
 </html>
