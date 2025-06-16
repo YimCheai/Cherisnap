@@ -1,0 +1,99 @@
+/* body, html 기본 margin, padding 제거, 화면 딱 맞게 */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #FFFAD7;
+  /* font-family: Pretendard, sans-serif; */
+  /* height: 100vh;          화면 높이 100% */
+  display: flex;
+  justify-content: center; /* 가로 중앙 */
+  align-items: center;     /* 세로 중앙 */
+  position: relative;
+  /* overflow: hidden; */
+}
+
+#container {
+  width: 1440px;
+  height: 1024px;
+  position: relative;
+  background: #FFFAD7;
+  /* overflow: hidden; */
+}
+
+
+/* 흰색 배경 박스들 */
+.white-box-large {
+  position: absolute;
+  background: white;
+}
+.white-box-large.left {
+  width: 901px;
+  height: 722px;
+  left: 94px;
+  top: 170px;
+}
+.white-box-large.right {
+  width: 241px;
+  height: 718px;
+  left: 1108px;
+  top: 177px;
+}
+
+/* 사진 회색 박스 */
+#photo-select-box {
+  position: absolute;
+  width: 300px;
+  height: 240px;
+  background: #B9B9B9;
+  left: 695px;
+  top: 652px;
+}
+
+/* 텍스트 스타일들 */
+.text-black-large {
+  position: absolute;
+  color: black;
+  font-size: 70px;
+  font-weight: 400;
+  letter-spacing: 14px;
+  left: 782px;
+  top: 740px;
+  width: 150px;
+  height: 74px;
+}
+.text-black-medium {
+  position: absolute;
+  color: black;
+  font-size: 20px;
+  font-weight: 400;
+  left: 780px;
+  top: 717px;
+  width: 180px;
+  height: 23px;
+}
+.text-gray-small {
+  position: absolute;
+  color: #636363;
+  font-size: 15px;
+  font-weight: 400;
+  left: 805px;
+  top: 699px;
+  width: 95px;
+  height: 23px;
+}
+
+/* 사진들 위치 */
+.photo {
+  position: absolute;
+  background: white;
+  width: 300px;
+  height: 240px;
+}
+.photo1 { left: 94px; top: 171px; }
+.photo2 { left: 394px; top: 171px; }
+.photo3 { left: 695px; top: 171px; }
+.photo4 { left: 94px; top: 411px; }
+.photo5 { left: 394px; top: 411px; }
+.photo6 { left: 695px; top: 412px; }
+.photo7 { left: 94px; top: 652px; }
+.photo8 { left: 394px; top: 652px; }
