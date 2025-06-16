@@ -1,0 +1,119 @@
+/* 중앙 정렬 기본 */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #FFFAD7;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Pretendard, sans-serif;
+}
+
+#container {
+  width: 1440px;
+  height: 1024px;
+  background: #FFFAD7;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 배경 흰색 박스 */
+.bg-white {
+  width: 1440px;
+  height: 1024px;
+  background: white;
+  position: absolute;
+  left: 1440px;
+  top: -201px;
+}
+
+/* 메인 박스 */
+.main-box {
+  width: 1032px;
+  height: 827px;
+  background: white;
+  position: absolute;
+  left: 204px;
+  top: 86px;
+}
+
+/* 사진 */
+.photo {
+  width: 1032px;
+  height: 827px;
+  position: absolute;
+  left: 204px;
+  top: 86px;
+}
+
+/* 숫자 */
+.text-number {
+  width: 98px;
+  height: 84px;
+  left: 39px;
+  top: 86px;
+  position: absolute;
+  font-size: 70px;
+  font-weight: 400;
+  color: black;
+}
+
+/* 촬영횟수 */
+.text-title {
+  width: 119px;
+  height: 36px;
+  left: 1285px;
+  top: 85px;
+  position: absolute;
+  font-size: 25px;
+  font-weight: 500;
+  color: black;
+}
+
+/* 구분선 */
+.divider {
+  width: 119px;
+  height: 0px;
+  left: 1285px;
+  top: 121px;
+  position: absolute;
+  border-top: 1px solid black;
+}
+
+/* 1/8 */
+.text-count {
+  width: 102px;
+  height: 45px;
+  left: 1289px;
+  top: 130px;
+  position: absolute;
+  font-size: 25px;
+  font-weight: 400;
+  letter-spacing: 3.75px;
+  color: black;
+}
+
+/* 한국어 문구 */
+.text-kor {
+  width: 330px;
+  height: 30px;
+  left: 564px;
+  top: 936px;
+  position: absolute;
+  font-size: 25px;
+  font-weight: 400;
+  color: black;
+}
+
+/* 영어 문구 */
+.text-eng {
+  width: 460px;
+  height: 30px;
+  left: 502px;
+  top: 966px;
+  position: absolute;
+  font-size: 25px;
+  font-weight: 400;
+  color: black;
+}
