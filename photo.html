@@ -13,6 +13,7 @@
     <div class="bg-white"></div>
     <div class="main-box"></div>
     <video class="photo" autoplay="true"></video>
+    <canvas id="canvas" style="display: none;"></canvas>
 
     <div class="text-number">08</div>
     <div class="text-title">촬영횟수</div>
@@ -22,9 +23,10 @@
     <div class="text-kor">렌즈를 보고 셔터를 눌러주세요.</div>
     <div class="text-eng">Look at the lens and press the shutter.</div>
   </div>
-
   <script>
     const video = document.querySelector("video.photo");
+    const timer_txt = document.querySelector(".text-number");
+    const cnt_txt = document.querySelector(".text-count");
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then(stream => {
@@ -34,18 +36,55 @@
         console.error("카메라 접근 실패:", err);
         alert("카메라에 접근할 수 없습니다.");
       });
-    // for (let i = 0; i < 8; i++) {
-    //   const num = 8;
-    //   const timer = setInterval(() => {
-    //     let timer_txt = document.querySelector("text-number");
-    //     timer_txt = num--;
-    //     if (num == 0) {
-    //       return num;
-    //     }
-    //   },8000);
-    // }
 
+    let totalCut = 8;// 총 촬영 횟수
+    let nowCut = 1; // 추가되는 촬영 횟수
+    let cntDown = 8; // 줄어드는 숫자
+    let timer;
+    let photos = [];
 
+    function updateTimer() {
+      timer_txt.textContent = cntDown.toString().padStart(2, '0');
+    }
+    function takePhoto() {
+      const context = canvas.getContext("2d");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = canvas.toDataURL("image/jpeg",0.7);
+      photos.push(imageData);
+      console.log(`📸 ${nowCut}/${totalCut}번째 사진 촬영`);
+    }
+    function moveNextPage(){
+      sessionStorage.setItem("photos", JSON.stringify(photos));
+      window.location.href = "photo2.html";
+    }
+
+    function startCount() {
+      timer = setInterval(() => {
+        cntDown--;
+        if (cntDown >= 0) updateTimer();
+        else {
+          takePhoto();
+          nowCut++;
+          if (nowCut > totalCut) {
+            clearInterval(timer);
+            moveNextPage()
+            return;
+          }
+        cntDown = 8;
+        updateTimer();
+        cnt_txt.textContent = `${nowCut}/${totalCut}`;
+        }
+      }, 1000)
+    }
+    document.addEventListener("keydown", e =>{
+      if(e.code === "Space"&& cntDown>0){
+        cntDown = 0;
+      }
+    });
+
+    startCount();
   </script>
 </body>
 

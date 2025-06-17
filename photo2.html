@@ -10,7 +10,15 @@
 <body>
     <div id="container">
         <div class="white-box-large left"></div>
-        <div class="white-box-large right"></div>
+        <div class="white-box-large right">
+            <div class="frame-container">
+                <img class="frame-photo frame1" />
+                <img class="frame-photo frame2" />
+                <img class="frame-photo frame3" />
+                <img class="frame-photo frame4" />
+            </div>
+        </div>
+
 
         <div id="photo-select-box"></div>
 
@@ -19,38 +27,31 @@
         <div class="text-black-large">0/4</div>
 
         <!-- 사진 박스와 이미지 넣기 -->
-        <div class="photo photo1">
-            <img src="https://placehold.co/300x240" alt="photo1" width="300" height="240" />
-        </div>
-        <div class="photo photo2">
-            <img src="https://placehold.co/300x240" alt="photo2" width="300" height="240" />
-        </div>
-        <div class="photo photo3">
-            <img src="https://placehold.co/300x240" alt="photo3" width="300" height="240" />
-        </div>
-        <div class="photo photo4">
-            <img src="https://placehold.co/300x240" alt="photo4" width="300" height="240" />
-        </div>
-        <div class="photo photo5">
-            <img src="https://placehold.co/300x240" alt="photo5" width="300" height="240" />
-        </div>
-        <div class="photo photo6">
-            <img src="https://placehold.co/300x240" alt="photo6" width="300" height="240" />
-        </div>
-        <div class="photo photo7">
-            <img src="https://placehold.co/300x240" alt="photo7" width="300" height="240" />
-        </div>
-        <div class="photo photo8">
-            <img src="https://placehold.co/300x240" alt="photo8" width="300" height="240" />
-        </div>
+        <div class="photo photo1"><img /></div>
+        <div class="photo photo2"><img /></div>
+        <div class="photo photo3"><img /></div>
+        <div class="photo photo4"><img /></div>
+        <div class="photo photo5"><img /></div>
+        <div class="photo photo6"><img /></div>
+        <div class="photo photo7"><img /></div>
+        <div class="photo photo8"><img /></div>
         <div style="position: absolute; right: -80px; bottom: 10px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="55" viewBox="0 0 22 27" fill="none">
                 <path d="M22 13.5L0.25 26.0574V0.942632L22 13.5Z" fill="black" />
             </svg>
         </div>
-
-
     </div>
+    <script>
+        //sessionStorage로 이미지를 받아오는 코드
+        const photos = JSON.parse(sessionStorage.getItem("photos") || "[]");
+        photos.forEach((src, i) => {
+            const imgtag = document.querySelector(`.photo${i + 1} img`);
+            if (imgtag) {
+                imgtag.src = src;
+                imgtag.alt = `photo${i + 1}`;
+            }
+        });
+    </script>
 </body>
 
 </html>

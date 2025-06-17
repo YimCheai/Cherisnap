@@ -1,13 +1,16 @@
 /* body, html 기본 margin, padding 제거, 화면 딱 맞게 */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   background: #FFFAD7;
   /* font-family: Pretendard, sans-serif; */
   /* height: 100vh;          화면 높이 100% */
   display: flex;
-  justify-content: center; /* 가로 중앙 */
-  align-items: center;     /* 세로 중앙 */
+  justify-content: center;
+  /* 가로 중앙 */
+  align-items: center;
+  /* 세로 중앙 */
   position: relative;
   /* overflow: hidden; */
 }
@@ -26,13 +29,20 @@ html, body {
   position: absolute;
   background: white;
 }
+
 .white-box-large.left {
   width: 901px;
   height: 722px;
   left: 94px;
   top: 170px;
 }
+
 .white-box-large.right {
+  background-image: url("img/frame_black2.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
   width: 241px;
   height: 718px;
   left: 1108px;
@@ -61,6 +71,7 @@ html, body {
   width: 150px;
   height: 74px;
 }
+
 .text-black-medium {
   position: absolute;
   color: black;
@@ -71,6 +82,7 @@ html, body {
   width: 180px;
   height: 23px;
 }
+
 .text-gray-small {
   position: absolute;
   color: #636363;
@@ -89,11 +101,71 @@ html, body {
   width: 300px;
   height: 240px;
 }
-.photo1 { left: 94px; top: 171px; }
-.photo2 { left: 394px; top: 171px; }
-.photo3 { left: 695px; top: 171px; }
-.photo4 { left: 94px; top: 411px; }
-.photo5 { left: 394px; top: 411px; }
-.photo6 { left: 695px; top: 412px; }
-.photo7 { left: 94px; top: 652px; }
-.photo8 { left: 394px; top: 652px; }
+
+.photo1 {
+  left: 94px;
+  top: 171px;
+}
+
+.photo2 {
+  left: 394px;
+  top: 171px;
+}
+
+.photo3 {
+  left: 695px;
+  top: 171px;
+}
+
+.photo4 {
+  left: 94px;
+  top: 411px;
+}
+
+.photo5 {
+  left: 394px;
+  top: 411px;
+}
+
+.photo6 {
+  left: 695px;
+  top: 412px;
+}
+
+.photo7 {
+  left: 94px;
+  top: 652px;
+}
+
+.photo8 {
+  left: 394px;
+  top: 652px;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.frame-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.frame1 { top: 40px; }
+.frame2 { top: 210px; }
+.frame3 { top: 370px; }
+.frame4 { top: 476px; }
+
+.frame-photo {
+  position: absolute;
+  width: 203px;           /* 프레임 안 가로에 딱 맞게 */
+  height: 165px;          /* 프레임 안 세로에 딱 맞게 */
+  left: 19px;             /* 양쪽 여백 */
+  object-fit: cover;      /* 비율 유지하며 프레임에 꽉 채우기 */
+  border-radius: 4px;
+}
