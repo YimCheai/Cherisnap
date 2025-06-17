@@ -29,14 +29,14 @@ html, body {
 }
 
 /* 메인 박스 */
-.main-box {
+/* .main-box {
   width: 1032px;
   height: 827px;
   background: white;
   position: absolute;
   left: 204px;
   top: 86px;
-}
+} */
 
 /* 사진 */
 .photo {

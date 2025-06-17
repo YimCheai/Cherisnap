@@ -1,103 +1,123 @@
+/* photostyle3.css */
+
 html, body {
-  margin: 0; 
-  padding: 0;
-  height: 100vh;         /* 화면 높이 100% */
-  background: #FFFAD7;
-  font-family: Pretendard, sans-serif;
-  display: flex;
-  justify-content: center; /* 가로 중앙 */
-  align-items: center;     /* 세로 중앙 */
+    margin: 0; 
+    padding: 0;
+    height: 100vh;      /* 화면 높이 100% */
+    background: #FFFAD7;
+    font-family: Pretendard, sans-serif; /* Pretendard 폰트가 없다면 웹폰트 연결 필요 */
+    display: flex;
+    justify-content: center; /* 가로 중앙 */
+    align-items: center;     /* 세로 중앙 */
 }
 
 #container {
-  width: 1440px;
-  height: 1024px;
-  position: relative;
-  background: #FFFAD7;
-  overflow: hidden;
+    width: 1440px;
+    height: 1024px;
+    position: relative;
+    background: #FFFAD7;
+    overflow: hidden; /* 컨테이너를 벗어나는 내용은 숨김 */
 }
 
 /* 회색 동그라미 */
 .circle {
-  width: 74px;
-  height: 74px;
-  background: #D9D9D9;
-  border-radius: 9999px;
-  position: absolute;
-  left: 1125px;
-  top: 488px;
+    width: 74px;
+    height: 74px;
+    background: #D9D9D9;
+    border-radius: 9999px; /* 완벽한 원 */
+    position: absolute;
+    left: 1125px;
+    top: 488px;
+    z-index: 1; /* 아이콘보다 아래에 배치 */
 }
 
 /* 텍스트 */
 .text {
-  position: absolute;
-  color: black;
-  font-size: 30px;
-  font-weight: 500;
-  word-wrap: break-word;
-  font-family: Pretendard, sans-serif;
+    position: absolute;
+    color: black;
+    font-size: 30px;
+    font-weight: 500;
+    word-wrap: break-word;
+    font-family: Pretendard, sans-serif;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    z-index: 2; /* 아이콘 위 또는 다른 요소와 겹치지 않도록 */
 }
 .text.save {
-  left: 1088px;
-  top: 437px;
-  width: 272px;
-  height: 75px;
+    left: 1088px;
+    top: 437px;
+    width: 272px; /* 텍스트 너비 */
+    line-height: normal;
 }
 .text.share {
-  left: 241px;
-  top: 428px;
-  width: 272px;
-  height: 75px;
+    left: 241px;
+    top: 428px;
+    width: 272px;
+    line-height: normal;
 }
 
-/* 흰 박스 */
+/* 흰 박스 (메인 이미지 뒤에 배경으로 사용) */
 .white-box {
-  width: 285.63px;
-  height: 851px;
-  background: white;
-  position: absolute;
-  left: 577px;
-  top: 87px;
+    width: 285.63px;
+    height: 851px;
+    background: white;
+    position: absolute;
+    left: 577px;
+    top: 87px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 그림자 추가 (선택 사항) */
+    z-index: 0; /* 이미지보다 뒤에 배치 */
+    border-radius: 10px; /* 모서리 둥글게 (선택 사항) */
 }
 
 /* 큰 사진 */
 .main-img {
-  width: 285.63px;
-  height: 850.25px;
-  position: absolute;
-  left: 577px;
-  top: 87px;
+    width: 285.63px;
+    height: 850.25px; /* .white-box와 거의 동일하게 맞춤 */
+    position: absolute;
+    left: 577px;
+    top: 87px;
+    object-fit: cover; /* 이미지가 박스를 꽉 채우도록 */
+    border-radius: 10px; /* .white-box와 동일하게 (선택 사항) */
+    z-index: 1; /* white-box 위에, 아이콘보다 아래 */
 }
 
 /* 아이콘들 */
 .icon {
-  position: absolute;
+    position: absolute;
+    cursor: pointer; /* 클릭 가능한 요소임을 표시 */
+    transition: transform 0.2s ease; /* 호버 효과 */
+    z-index: 2; /* 텍스트보다 위에 오도록 */
+}
+
+.icon:hover {
+    transform: translateY(-3px); /* 마우스 오버 시 살짝 위로 */
 }
 
 .save-icon {
-  width: 50px;
-  height: 50px;
-  left: 1139px;
-  top: 498px;
+    width: 50px;
+    height: 50px;
+    left: 1139px;
+    top: 498px;
+    z-index: 3;
 }
 
-.circle1 {
-  width: 74px;
-  height: 74px;
-  left: 370px;
-  top: 496px;
+/* 인스타그램 아이콘(`circle1`) 관련 스타일은 제거했습니다. */
+/* 나머지 아이콘(`circle2`, `circle3`)의 위치를 재조정해야 할 수 있습니다. */
+/* 현재 CSS는 3개의 아이콘이 왼쪽 공유하기 부분에 나열되어 있다고 가정하고 작성되었으나, */
+/* 인스타 아이콘이 없어지면 나머지 두 아이콘의 위치가 비대칭으로 보일 수 있습니다. */
+/* 필요하다면 이 부분을 디자인에 맞춰 조정해주세요. */
+
+.circle2 { /* URL 복사 아이콘 */
+    width: 86px;
+    height: 86px;
+    left: 134px; /* 기존 위치 유지 */
+    top: 490px;
+    z-index: 3;
 }
 
-.circle2 {
-  width: 86px;
-  height: 86px;
-  left: 134px;
-  top: 490px;
-}
-
-.circle3 {
-  width: 77px;
-  height: 77px;
-  left: 263px;
-  top: 493px;
+.circle3 { /* 카카오톡 아이콘 */
+    width: 77px;
+    height: 77px;
+    left: 263px; /* 기존 위치 유지 */
+    top: 493px;
+    z-index: 3;
 }
