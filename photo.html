@@ -79,11 +79,11 @@
         video.srcObject = stream;
         video.onloadedmetadata = () => {
           // 비디오의 실제 크기를 바탕으로 overlayFrame의 위치와 크기 조정
-          const videoRect = video.getBoundingClientRect();
-          overlayFrame.style.width = videoRect.width + 'px';
-          overlayFrame.style.height = videoRect.height + 'px';
-          overlayFrame.style.left = videoRect.left + 'px';
-          overlayFrame.style.top = videoRect.top + 'px';
+          // const videoRect = video.getBoundingClientRect();
+          // overlayFrame.style.width = videoRect.width + 'px';
+          // overlayFrame.style.height = videoRect.height + 'px';
+          // overlayFrame.style.left = videoRect.left + 'px';
+          // overlayFrame.style.top = videoRect.top + 'px';
 
           // 선택된 프레임이 'black'이 아니고, 프레임 이미지가 있다면 오버레이 표시
           if (selectedFrame !== 'black' && frameImages.length > 0) {
