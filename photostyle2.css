@@ -5,7 +5,7 @@ body {
   padding: 0;
   background: #FFFAD7;
   /* font-family: Pretendard, sans-serif; */
-  /* height: 100vh;          화면 높이 100% */
+  /* height: 100vh; */
   display: flex;
   justify-content: center;
   /* 가로 중앙 */
@@ -22,7 +22,6 @@ body {
   background: #FFFAD7;
   /* overflow: hidden; */
 }
-
 
 /* 흰색 배경 박스들 */
 .white-box-large {
@@ -47,6 +46,33 @@ body {
   height: 718px;
   left: 1108px;
   top: 177px;
+  overflow: hidden;
+}
+
+/* 프레임 안 사진 위치 */
+.frame-photo {
+  position: absolute;
+  width: 203px;
+  height: 163px;
+  left: 19px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.frame1 {
+  top: 40px;
+}
+
+.frame2 {
+  top: 205px;
+}
+
+.frame3 {
+  top: 370px;
+}
+
+.frame4 {
+  top: 536px;
 }
 
 /* 사진 회색 박스 */
@@ -100,6 +126,10 @@ body {
   background: white;
   width: 300px;
   height: 240px;
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .photo1 {
@@ -146,26 +176,23 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  user-select: none;
+  pointer-events: none;
 }
 
-.frame-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+/* 선택된 사진 강조 */
+.photo.selected {
+  outline: 4px solid hotpink;
+  box-sizing: border-box;
 }
 
-.frame1 { top: 40px; }
-.frame2 { top: 210px; }
-.frame3 { top: 370px; }
-.frame4 { top: 476px; }
-
-.frame-photo {
+/* 다음 버튼 스타일 */
+#next-button {
   position: absolute;
-  width: 203px;           /* 프레임 안 가로에 딱 맞게 */
-  height: 165px;          /* 프레임 안 세로에 딱 맞게 */
-  left: 19px;             /* 양쪽 여백 */
-  object-fit: cover;      /* 비율 유지하며 프레임에 꽉 채우기 */
-  border-radius: 4px;
+  right: -80px;
+  bottom: 10px;
+  cursor: pointer;
+  width: 44px;
+  height: 55px;
+  user-select: none;
 }

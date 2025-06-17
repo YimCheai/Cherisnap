@@ -35,14 +35,13 @@
         <div class="photo photo6"><img /></div>
         <div class="photo photo7"><img /></div>
         <div class="photo photo8"><img /></div>
-        <div style="position: absolute; right: -80px; bottom: 10px;">
+        <div id="next-button" style="position: absolute; right: -80px; bottom: 10px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="55" viewBox="0 0 22 27" fill="none">
                 <path d="M22 13.5L0.25 26.0574V0.942632L22 13.5Z" fill="black" />
             </svg>
         </div>
     </div>
     <script>
-        //sessionStorage로 이미지를 받아오는 코드
         const photos = JSON.parse(sessionStorage.getItem("photos") || "[]");
         photos.forEach((src, i) => {
             const imgtag = document.querySelector(`.photo${i + 1} img`);
@@ -51,7 +50,102 @@
                 imgtag.alt = `photo${i + 1}`;
             }
         });
+
+        const photoDivs = document.querySelectorAll(".photo");
+        const selectedPhotos = [];
+        const maxSelect = 4;
+
+        photoDivs.forEach((div, index) => {
+            div.addEventListener("click", () => {
+                const img = div.querySelector("img");
+                if (!img.src) return;
+
+                const idx = selectedPhotos.indexOf(img.src);
+                if (idx !== -1) {
+                    selectedPhotos.splice(idx, 1);
+                    div.classList.remove("selected");
+                } else {
+                    if (selectedPhotos.length >= maxSelect) return;
+                    selectedPhotos.push(img.src);
+                    div.classList.add("selected");
+                }
+
+                document.querySelector(".text-black-large").textContent = `${selectedPhotos.length}/4`;
+
+                // 프레임 사진 삽입 (선택한 사진만 보여줌)
+                for (let i = 0; i < 4; i++) {
+                    const frameImg = document.querySelector(`.frame${i + 1}`);
+                    frameImg.src = selectedPhotos[i] || "";
+                    frameImg.alt = selectedPhotos[i] ? `frame${i + 1}` : "";
+                }
+            });
+        });
+
+        // 캔버스에 4장 사진과 프레임 합성 함수
+        async function createCompositeImage(photoUrls) {
+            const canvasWidth = 285.63;
+            const canvasHeight = 850.25;
+            const canvas = document.createElement("canvas");
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+            const ctx = canvas.getContext("2d");
+
+            // 배경 하얀색으로 초기화
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+            const padding = 10;
+            const spacing = 10;
+            const totalHeight = canvasHeight - padding * 2 - spacing * 3;
+            const singleHeight = totalHeight / 4;
+
+            // 사진 4장 그리기
+            for (let i = 0; i < photoUrls.length; i++) {
+                const img = new Image();
+                img.crossOrigin = "anonymous"; // CORS 문제 방지용 (필요시)
+                img.src = photoUrls[i];
+                await new Promise(resolve => (img.onload = resolve));
+
+                const aspectRatio = img.width / img.height;
+                let drawWidth = singleHeight * aspectRatio;
+                let drawHeight = singleHeight;
+
+                if (drawWidth > canvasWidth - padding * 2) {
+                    drawWidth = canvasWidth - padding * 2;
+                    drawHeight = drawWidth / aspectRatio;
+                }
+
+                const drawX = padding + (canvasWidth - padding * 2 - drawWidth) / 2;
+                const drawY = padding + i * (singleHeight + spacing) + (singleHeight - drawHeight) / 2;
+
+                ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+            }
+
+            // 프레임 이미지 덮어쓰기 - 이게 프레임 포함시키는 핵심!
+            const frameImg = new Image();
+            frameImg.src = "img/frame_black2.png";
+            await new Promise(resolve => (frameImg.onload = resolve));
+            ctx.drawImage(frameImg, 0, 0, canvasWidth, canvasHeight);
+
+            return canvas.toDataURL("image/jpeg",0.7);
+        }
+
+
+        document.getElementById("next-button").addEventListener("click", async () => {
+            if (selectedPhotos.length !== 4) {
+                alert("사진 4장을 모두 선택해주세요");
+                return;
+            }
+            // 캔버스 합성 후 DataURL 저장
+            const compositeDataUrl = await createCompositeImage(selectedPhotos);
+            sessionStorage.setItem("finalCompositePhoto", compositeDataUrl);
+            // 선택 사진도 저장 (필요시)
+            sessionStorage.setItem("selectedPhotos", JSON.stringify(selectedPhotos));
+
+            window.location.href = "photo3.html";
+        });
     </script>
+
 </body>
 
 </html>
