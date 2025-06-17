@@ -1,24 +1,52 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>촬영 안내 화면</title>
   <link rel="stylesheet" href="photostyle.css" />
 </head>
+
 <body>
   <div id="container">
     <div class="bg-white"></div>
     <div class="main-box"></div>
-    <img class="photo" src="https://placehold.co/1032x827" />
+    <video class="photo" autoplay="true"></video>
 
     <div class="text-number">08</div>
     <div class="text-title">촬영횟수</div>
     <div class="divider"></div>
     <div class="text-count">1/8</div>
-    
+
     <div class="text-kor">렌즈를 보고 셔터를 눌러주세요.</div>
     <div class="text-eng">Look at the lens and press the shutter.</div>
   </div>
+
+  <script>
+    const video = document.querySelector("video.photo");
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then(stream => {
+        video.srcObject = stream;
+      })
+      .catch(err => {
+        console.error("카메라 접근 실패:", err);
+        alert("카메라에 접근할 수 없습니다.");
+      });
+    // for (let i = 0; i < 8; i++) {
+    //   const num = 8;
+    //   const timer = setInterval(() => {
+    //     let timer_txt = document.querySelector("text-number");
+    //     timer_txt = num--;
+    //     if (num == 0) {
+    //       return num;
+    //     }
+    //   },8000);
+    // }
+
+
+  </script>
 </body>
+
 </html>
