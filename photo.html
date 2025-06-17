@@ -2,214 +2,208 @@
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>촬영 안내 화면</title>
-    <link rel="stylesheet" href="photostyle.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>촬영 안내 화면</title>
+  <link rel="stylesheet" href="photostyle.css" />
 </head>
 
 <body>
-    <div id="container">
-        <div class="bg-white"></div>
-        <video class="photo" autoplay="true"></video>
-        <canvas id="canvas" style="display: none;"></canvas>
+  <div id="container">
+    <div class="bg-white"></div>
+    <video class="photo" autoplay="true"></video>
+    <canvas id="canvas" style="display: none;"></canvas>
 
-        <img id="overlayFrame" src="" alt="프레임 오버레이" />
+    <img id="overlayFrame" src="" alt="프레임 오버레이" />
 
-        <div class="text-number">08</div>
-        <div class="text-title">촬영횟수</div>
-        <div class="divider"></div>
-        <div class="text-count">1/8</div>
+    <div class="text-number">08</div>
+    <div class="text-title">촬영횟수</div>
+    <div class="divider"></div>
+    <div class="text-count">1/8</div>
 
-        <div class="text-kor">렌즈를 보고 셔터를 눌러주세요.</div>
-        <div class="text-eng">Look at the lens and press the shutter.</div>
-    </div>
-    <script>
-        const video = document.querySelector("video.photo");
-        const canvas = document.getElementById("canvas");
-        const overlayFrame = document.getElementById('overlayFrame');
-        const timer_txt = document.querySelector(".text-number");
-        const cnt_txt = document.querySelector(".text-count");
+    <div class="text-kor">렌즈를 보고 셔터를 눌러주세요.</div>
+    <div class="text-eng">Look at the lens and press the shutter.</div>
+  </div>
+  <script>
+    const video = document.querySelector("video.photo");
+    const canvas = document.getElementById("canvas");
+    const overlayFrame = document.getElementById('overlayFrame');
+    const timer_txt = document.querySelector(".text-number");
+    const cnt_txt = document.querySelector(".text-count");
 
-        // URL 쿼리 파라미터에서 'frame' 값 가져오기
-        const urlParams = new URLSearchParams(window.location.search);
-        const selectedFrame = urlParams.get('frame'); // 'gaon', 'ningning', 'black' 중 하나
+    // URL 쿼리 파라미터에서 'frame' 값 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedFrame = urlParams.get('frame'); // 'gaon', 'ningning', 'black' 중 하나
 
-        let totalCut = 8; // 총 촬영 횟수 (기본값)
-        let nowCut = 1; // 현재 촬영 횟수
-        let cntDown = 8; // 카운트다운 숫자 (8초)
-        let timer;
-        let photos = []; // 촬영된 이미지 Data URL 저장
-        let frameImages = []; // 현재 프레임 셋의 이미지 경로 목록
+    let totalCut = 8; // 총 촬영 횟수 (기본값)
+    let nowCut = 1; // 현재 촬영 횟수
+    let cntDown = 8; // 카운트다운 숫자 (8초)
+    let timer;
+    let photos = []; // 촬영된 이미지 Data URL 저장
+    let frameImages = []; // 현재 프레임 셋의 이미지 경로 목록
 
-        // 선택된 프레임에 따라 설정 초기화
-        function initializeFrameSettings() {
-            switch (selectedFrame) {
-                case 'gaon':
-                    frameImages = [
-                        'img/frame_gaon1.png', 'img/frame_gaon2.png',
-                        'img/frame_gaon3.png', 'img/frame_gaon4.png'
-                    ];
-                    totalCut = 8; // 각 프레임 2번씩 총 8번 촬영
-                    break;
-                case 'ningning':
-                    frameImages = [
-                        'img/frame_ningning1.png', 'img/frame_ningning2.png',
-                        'img/frame_ningning3.png', 'img/frame_ningning4.png' // 수정: ningning.png -> ningning3.png
-                    ];
-                    totalCut = 8; // 각 프레임 2번씩 총 8번 촬영
-                    break;
-                case 'black':
-                    frameImages = []; // 빈 화면이므로 프레임 이미지는 없음
-                    totalCut = 8; // 블랙 프레임도 8번 촬영
-                    break;
-                default:
-                    // 기본값 또는 에러 처리 (예: 프레임 선택이 없거나 잘못된 경우)
-                    frameImages = []; // 프레임 없음
-                    totalCut = 8;
-                    console.warn("알 수 없는 프레임 선택 또는 프레임 없음:", selectedFrame);
-                    break;
+    // 선택된 프레임에 따라 설정 초기화
+    function initializeFrameSettings() {
+      switch (selectedFrame) {
+        case 'gaon':
+          frameImages = [
+            'img/frame_gaon1.png', 'img/frame_gaon2.png',
+            'img/frame_gaon3.png', 'img/frame_gaon4.png'
+          ];
+          totalCut = 8; // 각 프레임 2번씩 총 8번 촬영
+          break;
+        case 'ningning':
+          frameImages = [
+            'img/frame_ningning1.png', 'img/frame_ningning2.png',
+            'img/frame_ningning3.png', 'img/frame_ningning4.png' // 수정: ningning.png -> ningning3.png
+          ];
+          totalCut = 8; // 각 프레임 2번씩 총 8번 촬영
+          break;
+        case 'black':
+          frameImages = []; // 빈 화면이므로 프레임 이미지는 없음
+          totalCut = 8; // 블랙 프레임도 8번 촬영
+          break;
+        default:
+          // 기본값 또는 에러 처리 (예: 프레임 선택이 없거나 잘못된 경우)
+          frameImages = []; // 프레임 없음
+          totalCut = 8;
+          console.warn("알 수 없는 프레임 선택 또는 프레임 없음:", selectedFrame);
+          break;
+      }
+      cnt_txt.textContent = `${nowCut}/${totalCut}`; // 총 촬영 횟수 업데이트
+    }
+
+    // 카메라 접근 및 비디오 스트림 설정
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then(stream => {
+        video.srcObject = stream;
+        video.onloadedmetadata = () => {
+          // 비디오의 실제 크기를 바탕으로 overlayFrame의 위치와 크기 조정
+          const videoRect = video.getBoundingClientRect();
+          overlayFrame.style.width = videoRect.width + 'px';
+          overlayFrame.style.height = videoRect.height + 'px';
+          overlayFrame.style.left = videoRect.left + 'px';
+          overlayFrame.style.top = videoRect.top + 'px';
+
+          // 선택된 프레임이 'black'이 아니고, 프레임 이미지가 있다면 오버레이 표시
+          if (selectedFrame !== 'black' && frameImages.length > 0) {
+            overlayFrame.src = frameImages[0]; // 첫 번째 프레임 이미지 미리 로드
+            overlayFrame.style.display = 'block'; // 오버레이 표시
+          } else {
+            overlayFrame.style.display = 'none'; // 'black'이거나 프레임이 없으면 숨김
+          }
+        };
+      })
+      .catch(err => {
+        console.error("카메라 접근 실패:", err);
+        alert("카메라에 접근할 수 없습니다. 권한을 확인해주세요.");
+      });
+
+    function updateTimer() {
+      timer_txt.textContent = cntDown.toString().padStart(2, '0');
+    }
+
+    async function takePhoto() {
+      const context = canvas.getContext("2d");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      // 비디오 현재 화면 캔버스에 그리기
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      if (selectedFrame !== 'black' && frameImages.length > 0) {
+        const frameIndex = Math.floor((nowCut - 1) / 2);
+        const currentFrameSrc = frameImages[frameIndex];
+
+        if (currentFrameSrc) {
+          const frameImg = new Image();
+          frameImg.src = currentFrameSrc;
+
+          await new Promise((resolve, reject) => {
+            frameImg.onload = resolve;
+            frameImg.onerror = () => {
+              console.error(`프레임 이미지 로드 실패: ${currentFrameSrc}`);
+              resolve();
+            };
+          });
+
+          // 비율 유지해서 프레임 그리기
+          const videoAspectRatio = video.videoWidth / video.videoHeight;
+          const canvasAspectRatio = canvas.width / canvas.height;
+
+          let drawX = 0;
+          let drawY = 0;
+          let drawWidth = canvas.width;
+          let drawHeight = canvas.height;
+
+          if (videoAspectRatio > canvasAspectRatio) {
+            drawHeight = canvas.height;
+            drawWidth = canvas.height * frameImg.width / frameImg.height;
+            drawX = (canvas.width - drawWidth) / 2;
+          } else {
+            drawWidth = canvas.width;
+            drawHeight = canvas.width * frameImg.height / frameImg.width;
+            drawY = (canvas.height - drawHeight) / 2;
+          }
+
+          context.drawImage(frameImg, drawX, drawY, drawWidth, drawHeight);
+        }
+      }
+
+      // 사진 데이터 저장
+      const imageData = canvas.toDataURL("image/jpeg", 0.9);
+      photos.push(imageData);
+      console.log(`📸 ${nowCut}/${totalCut}번째 사진 촬영`);
+    }
+
+
+    function moveNextPage() {
+      sessionStorage.setItem("photos", JSON.stringify(photos));
+      window.location.href = "photo2.html";
+    }
+
+    function startCount() {
+      // 초기 설정 호출
+      initializeFrameSettings();
+
+      timer = setInterval(() => {
+        cntDown--;
+        if (cntDown >= 0) {
+          updateTimer();
+        } else {
+          // 카운트다운이 끝나면 사진 촬영
+          takePhoto().then(() => {
+            nowCut++;
+            // 다음 촬영을 위한 프레임 오버레이 업데이트
+            if (selectedFrame !== 'black' && frameImages.length > 0 && nowCut <= totalCut) {
+              const nextFrameIndex = Math.floor((nowCut - 1) / 2);
+              if (frameImages[nextFrameIndex]) {
+                overlayFrame.src = frameImages[nextFrameIndex];
+              }
             }
-            cnt_txt.textContent = `${nowCut}/${totalCut}`; // 총 촬영 횟수 업데이트
-        }
 
-        // 카메라 접근 및 비디오 스트림 설정
-        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-            .then(stream => {
-                video.srcObject = stream;
-                video.onloadedmetadata = () => {
-                    // 비디오의 실제 크기를 바탕으로 overlayFrame의 위치와 크기 조정
-                    const videoRect = video.getBoundingClientRect();
-                    overlayFrame.style.width = videoRect.width + 'px';
-                    overlayFrame.style.height = videoRect.height + 'px';
-                    overlayFrame.style.left = videoRect.left + 'px';
-                    overlayFrame.style.top = videoRect.top + 'px';
-
-                    // 선택된 프레임이 'black'이 아니고, 프레임 이미지가 있다면 오버레이 표시
-                    if (selectedFrame !== 'black' && frameImages.length > 0) {
-                        overlayFrame.src = frameImages[0]; // 첫 번째 프레임 이미지 미리 로드
-                        overlayFrame.style.display = 'block'; // 오버레이 표시
-                    } else {
-                        overlayFrame.style.display = 'none'; // 'black'이거나 프레임이 없으면 숨김
-                    }
-                };
-            })
-            .catch(err => {
-                console.error("카메라 접근 실패:", err);
-                alert("카메라에 접근할 수 없습니다. 권한을 확인해주세요.");
-            });
-
-        function updateTimer() {
-            timer_txt.textContent = cntDown.toString().padStart(2, '0');
-        }
-
-        async function takePhoto() {
-            const context = canvas.getContext("2d");
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-
-            // 1. 비디오에서 현재 화면 그리기
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // 2. 선택된 프레임이 'black'이 아니고, 프레임 이미지가 있을 경우 프레임 오버레이 그리기
-            if (selectedFrame !== 'black' && frameImages.length > 0) {
-                // 현재 촬영 횟수에 맞는 프레임 이미지 선택
-                // nowCut은 1부터 시작하므로 인덱스는 (nowCut-1) / 2
-                const frameIndex = Math.floor((nowCut - 1) / 2); // 1,2번째는 0인덱스, 3,4번째는 1인덱스 등
-                const currentFrameSrc = frameImages[frameIndex];
-
-                if (currentFrameSrc) {
-                    const frameImg = new Image();
-                    frameImg.src = currentFrameSrc;
-                    
-                    // 이미지가 로드될 때까지 기다림 (중요: 이미지 로드가 완료되어야 캔버스에 그릴 수 있음)
-                    await new Promise((resolve, reject) => {
-                        frameImg.onload = resolve;
-                        frameImg.onerror = () => {
-                            console.error(`프레임 이미지 로드 실패: ${currentFrameSrc}`);
-                            // 이미지 로드 실패 시에도 다음 단계를 진행할 수 있도록 resolve
-                            resolve(); 
-                        };
-                    });
-
-                    // 캔버스에 프레임 이미지 그리기
-                    // 비디오 위에 꽉 차게 그리되, 비율 유지 (main-box와 .photo의 크기를 따름)
-                    const videoAspectRatio = video.videoWidth / video.videoHeight;
-                    const canvasAspectRatio = canvas.width / canvas.height;
-
-                    let drawX = 0;
-                    let drawY = 0;
-                    let drawWidth = canvas.width;
-                    let drawHeight = canvas.height;
-
-                    if (videoAspectRatio > canvasAspectRatio) {
-                        // 비디오가 더 가로로 길 때 (높이에 맞춰짐)
-                        drawHeight = canvas.height;
-                        drawWidth = canvas.height * frameImg.width / frameImg.height;
-                        drawX = (canvas.width - drawWidth) / 2;
-                    } else {
-                        // 비디오가 더 세로로 길거나 같을 때 (너비에 맞춰짐)
-                        drawWidth = canvas.width;
-                        drawHeight = canvas.width * frameImg.height / frameImg.width;
-                        drawY = (canvas.height - drawHeight) / 2;
-                    }
-
-                    context.drawImage(frameImg, drawX, drawY, drawWidth, drawHeight);
-                }
+            if (nowCut > totalCut) {
+              clearInterval(timer);
+              moveNextPage();
+              return;
             }
-
-            const imageData = canvas.toDataURL("image/jpeg", 0.9); // 품질을 높여서 저장 (0.7 -> 0.9)
-            photos.push(imageData);
-            console.log(`📸 ${nowCut}/${totalCut}번째 사진 촬영`);
+            cntDown = 8; // 다음 촬영을 위한 카운트다운 초기화
+            updateTimer();
+            cnt_txt.textContent = `${nowCut}/${totalCut}`;
+          });
         }
+      }, 1000)
+    }
 
-        function moveNextPage() {
-            sessionStorage.setItem("photos", JSON.stringify(photos));
-            window.location.href = "photo2.html";
-        }
+    document.addEventListener("keydown", e => {
+      if (e.code === "Space" && cntDown > 0) {
+        cntDown = 0; // 스페이스바 누르면 즉시 촬영
+      }
+    });
 
-        function startCount() {
-            // 초기 설정 호출
-            initializeFrameSettings(); 
-
-            timer = setInterval(() => {
-                cntDown--;
-                if (cntDown >= 0) {
-                    updateTimer();
-                } else {
-                    // 카운트다운이 끝나면 사진 촬영
-                    takePhoto().then(() => {
-                        nowCut++;
-                        // 다음 촬영을 위한 프레임 오버레이 업데이트
-                        if (selectedFrame !== 'black' && frameImages.length > 0 && nowCut <= totalCut) {
-                            const nextFrameIndex = Math.floor((nowCut - 1) / 2);
-                            if (frameImages[nextFrameIndex]) {
-                                overlayFrame.src = frameImages[nextFrameIndex];
-                            }
-                        }
-
-                        if (nowCut > totalCut) {
-                            clearInterval(timer);
-                            moveNextPage();
-                            return;
-                        }
-                        cntDown = 8; // 다음 촬영을 위한 카운트다운 초기화
-                        updateTimer();
-                        cnt_txt.textContent = `${nowCut}/${totalCut}`;
-                    });
-                }
-            }, 1000)
-        }
-
-        document.addEventListener("keydown", e => {
-            if (e.code === "Space" && cntDown > 0) {
-                cntDown = 0; // 스페이스바 누르면 즉시 촬영
-            }
-        });
-
-        // 페이지 로드 시 카운트 시작
-        startCount();
-    </script>
+    // 페이지 로드 시 카운트 시작
+    startCount();
+  </script>
 </body>
 
 </html>

@@ -44,11 +44,11 @@ html, body {
 #overlayFrame {
     /* .photo와 동일한 위치와 크기를 가질 것이므로, position: absolute와 z-index만 중요 */
     position: absolute;
-    left: 204px; /* .photo와 동일 */
-    top: 86px;  /* .photo와 동일 */
+    left: 200px; /* .photo와 동일 */
+    top: 170px;  /* .photo와 동일 */
     width: 1032px; /* .photo와 동일 */
     height: 827px; /* .photo와 동일 */
-    object-fit: contain; /* 프레임 이미지가 비율 유지하며 영역 안에 맞도록 */
+    /* object-fit: contain; 프레임 이미지가 비율 유지하며 영역 안에 맞도록 */
     z-index: 2; /* 비디오 위에 오도록 */
     pointer-events: none; /* 프레임 위로 마우스 이벤트를 통과시키도록 */
     display: none; /* JS에서 필요할 때 'block'으로 변경 */
