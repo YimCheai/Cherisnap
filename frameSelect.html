@@ -44,14 +44,18 @@
             align-items: center;
             padding: 20px;
             box-sizing: border-box;
-            /* 사각형과 아래 텍스트 그룹 간의 간격을 조절하기 위해 margin-bottom은 유지하거나 조정 */
-            /* margin-bottom: 20px; */ 
         }
 
         .rectangle img {
             max-width: 25%;
             max-height: 80%;
             object-fit: contain;
+            cursor: pointer; /* 클릭 가능한 요소임을 시각적으로 보여줌 */
+            transition: transform 0.2s ease-in-out; /* 클릭 시 효과 */
+        }
+
+        .rectangle img:hover {
+            transform: scale(1.05); /* 호버 시 약간 확대 */
         }
 
         .captions-container {
@@ -59,7 +63,6 @@
             display: flex;
             justify-content: space-around;
             transform: translateY(5%); /* 사각형과 동일한 수직 이동 */
-            /* 이미지와 텍스트 간격 조정: 음수 값을 더 크게 줍니다. */
             margin-top: -30px; 
         }
 
@@ -81,9 +84,9 @@
     </div>
 
     <div class="rectangle">
-        <img src="img/frame_gaon.png" alt="프레임 가온">
-        <img src="img/frame_ningning.png" alt="프레임 닝닝">
-        <img src="img/frame_black.png" alt="프레임 블랙">
+        <img src="img/frame_gaon.png" alt="프레임 가온" id="frameGaon">
+        <img src="img/frame_ningning.png" alt="프레임 닝닝" id="frameNingning">
+        <img src="img/frame_black.png" alt="프레임 블랙" id="frameBlack">
     </div>
 
     <div class="captions-container">
@@ -91,5 +94,25 @@
         <div class="image-caption">æspa 닝닝</div>
         <div class="image-caption">Black</div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const frameGaon = document.getElementById('frameGaon');
+            const frameNingning = document.getElementById('frameNingning');
+            const frameBlack = document.getElementById('frameBlack');
+
+            frameGaon.addEventListener('click', () => {
+                window.location.href = 'photo.html?frame=gaon';
+            });
+
+            frameNingning.addEventListener('click', () => {
+                window.location.href = 'photo.html?frame=ningning';
+            });
+
+            frameBlack.addEventListener('click', () => {
+                window.location.href = 'photo.html?frame=black';
+            });
+        });
+    </script>
 </body>
 </html>

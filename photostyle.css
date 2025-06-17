@@ -1,119 +1,143 @@
 /* 중앙 정렬 기본 */
 html, body {
-  margin: 0;
-  padding: 0;
-  background: #FFFAD7;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Pretendard, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #FFFAD7;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Pretendard, sans-serif;
 }
 
 #container {
-  width: 1440px;
-  height: 1024px;
-  background: #FFFAD7;
-  position: relative;
-  overflow: hidden;
+    width: 1440px;
+    height: 1024px;
+    background: #FFFAD7;
+    position: relative;
+    overflow: hidden;
 }
 
 /* 배경 흰색 박스 */
 .bg-white {
-  width: 1440px;
-  height: 1024px;
-  background: white;
-  position: absolute;
-  left: 1440px;
-  top: -201px;
+    width: 1440px;
+    height: 1024px;
+    background: white;
+    position: absolute;
+    left: 1440px; /* 이 위치가 의도된 것인지 확인 필요. 현재는 화면 밖으로 밀려남. */
+    top: -201px; /* 이 위치가 의도된 것인지 확인 필요. */
+    z-index: 0; /* 다른 콘텐츠 뒤에 오도록 */
 }
 
-/* 메인 박스 */
-/* .main-box {
-  width: 1032px;
-  height: 827px;
-  background: white;
-  position: absolute;
-  left: 204px;
-  top: 86px;
-} */
-
-/* 사진 */
+/* 메인 비디오/사진 영역 */
 .photo {
-  width: 1032px;
-  height: 827px;
-  position: absolute;
-  left: 204px;
-  top: 86px;
+    width: 1032px;
+    height: 827px;
+    position: absolute;
+    left: 204px;
+    top: 86px;
+    object-fit: cover; /* 비디오가 공간을 채우고 잘리지 않도록 */
+    z-index: 1; /* 오버레이 프레임 아래에 오도록 */
+}
+
+/* 프레임 오버레이 */
+#overlayFrame {
+    /* .photo와 동일한 위치와 크기를 가질 것이므로, position: absolute와 z-index만 중요 */
+    position: absolute;
+    left: 204px; /* .photo와 동일 */
+    top: 86px;  /* .photo와 동일 */
+    width: 1032px; /* .photo와 동일 */
+    height: 827px; /* .photo와 동일 */
+    object-fit: contain; /* 프레임 이미지가 비율 유지하며 영역 안에 맞도록 */
+    z-index: 2; /* 비디오 위에 오도록 */
+    pointer-events: none; /* 프레임 위로 마우스 이벤트를 통과시키도록 */
+    display: none; /* JS에서 필요할 때 'block'으로 변경 */
 }
 
 /* 숫자 */
 .text-number {
-  width: 98px;
-  height: 84px;
-  left: 39px;
-  top: 86px;
-  position: absolute;
-  font-size: 70px;
-  font-weight: 400;
-  color: black;
+    width: 98px;
+    height: 84px;
+    left: 39px;
+    top: 86px;
+    position: absolute;
+    font-size: 70px;
+    font-weight: 400;
+    color: black;
+    z-index: 3; /* 다른 요소들 위에 오도록 */
 }
 
 /* 촬영횟수 */
 .text-title {
-  width: 119px;
-  height: 36px;
-  left: 1285px;
-  top: 85px;
-  position: absolute;
-  font-size: 25px;
-  font-weight: 500;
-  color: black;
+    width: 119px;
+    height: 36px;
+    left: 1285px;
+    top: 85px;
+    position: absolute;
+    font-size: 25px;
+    font-weight: 500;
+    color: black;
+    z-index: 3;
 }
 
 /* 구분선 */
 .divider {
-  width: 119px;
-  height: 0px;
-  left: 1285px;
-  top: 121px;
-  position: absolute;
-  border-top: 1px solid black;
+    width: 119px;
+    height: 0px;
+    left: 1285px;
+    top: 121px;
+    position: absolute;
+    border-top: 1px solid black;
+    z-index: 3;
 }
 
 /* 1/8 */
 .text-count {
-  width: 102px;
-  height: 45px;
-  left: 1289px;
-  top: 130px;
-  position: absolute;
-  font-size: 25px;
-  font-weight: 400;
-  letter-spacing: 3.75px;
-  color: black;
+    width: 102px;
+    height: 45px;
+    left: 1289px;
+    top: 130px;
+    position: absolute;
+    font-size: 25px;
+    font-weight: 400;
+    letter-spacing: 3.75px;
+    color: black;
+    z-index: 3;
 }
 
 /* 한국어 문구 */
 .text-kor {
-  width: 330px;
-  height: 30px;
-  left: 564px;
-  top: 936px;
-  position: absolute;
-  font-size: 25px;
-  font-weight: 400;
-  color: black;
+    width: 330px;
+    height: 30px;
+    left: 564px;
+    top: 936px;
+    position: absolute;
+    font-size: 25px;
+    font-weight: 400;
+    color: black;
+    z-index: 3;
 }
 
 /* 영어 문구 */
 .text-eng {
-  width: 460px;
-  height: 30px;
-  left: 502px;
-  top: 966px;
-  position: absolute;
-  font-size: 25px;
-  font-weight: 400;
-  color: black;
+    width: 460px;
+    height: 30px;
+    left: 502px;
+    top: 966px;
+    position: absolute;
+    font-size: 25px;
+    font-weight: 400;
+    color: black;
+    z-index: 3;
 }
+
+/* 기존 .main-box는 .photo가 직접 영역을 차지하므로 필요없다면 제거 */
+/* .main-box {
+    width: 1032px;
+    height: 827px;
+    background: white;
+    position: absolute;
+    left: 204px;
+    top: 86px;
+    z-index: 0;
+} */

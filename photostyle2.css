@@ -167,5 +167,5 @@ body {
   height: 165px;          /* 프레임 안 세로에 딱 맞게 */
   left: 19px;             /* 양쪽 여백 */
   object-fit: cover;      /* 비율 유지하며 프레임에 꽉 채우기 */
-  border-radius: 4px;
+
 }
