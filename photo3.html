@@ -1,22 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-     <link rel="stylesheet" href="photostyle3.css" />
+    <title>사진 저장 및 공유</title>
+    <link rel="stylesheet" href="photostyle3.css" />
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+            integrity="sha384-kontUMEqQ6Pj8CmsDmoaBFBLfPbbY2/LDhQVJ/JlgkK5X/YpWMXF+BmwO8b/6T0s" crossorigin="anonymous"></script>
+    <script>
+        // Kakao SDK 초기화. 여기에 발급받은 JavaScript 키를 넣어주세요!
+        // 예시 키: '4562d8687925d5be5ff9e64cfaad4cb5'
+        Kakao.init('4562d8687925d5be5ff9e64cfaad4cb5'); 
+        console.log("카카오 SDK 초기화 상태:", Kakao.isInitialized()); 
+    </script>
 </head>
 <body>
     <div id="container">
-  <div class="circle"></div>
-  <div class="text save">이미지 저장</div>
-  <div class="text share">공유하기</div>
-  <div class="white-box"></div>
-  <img class="main-img" src="" />
-  <img class="icon save-icon" src=".\img\down.png" />
-  <img class="icon circle1" src=".\img\insta.png" />
-  <img class="icon circle2" src="img\url.png" />
-  <img class="icon circle3" src="img\kakao.png" />
-</div>
+        <div class="circle"></div>
+        <div class="text save">이미지 저장</div>
+        <div class="text share">공유하기</div>
+        <div class="white-box"></div>
+        <img class="main-img" id="finalPhotoStrip" src="" alt="최종 4컷 사진" />
+        
+        <img class="icon save-icon" src="img/down.png" alt="다운로드 아이콘" id="downloadIcon" />
+        <img class="icon circle2" src="img/url.png" alt="URL 복사 아이콘" id="urlIcon" />
+        <img class="icon circle3" src="img/kakao.png" alt="카카오톡 아이콘" id="kakaoIcon" />
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const finalPhotoStrip = document.getElementById('finalPhotoStrip');
+            const downloadIcon = document.getElementById('downloadIcon');
+            // const instaIcon = document.getElementById('instaIcon'); // 인스타그램 아이콘 제거
+            const urlIcon = document.getElementById('urlIcon');
+            const kakaoIcon = document.getElementById('kakaoIcon');
+
+            let finalImageSrc = ''; // 최종 이미지의 Data URL 또는 Blob URL
+
+            // photo2.html에서 LocalStorage에 저장된 최종 선택 사진 불러오기
+            const loadFinalPhoto = async () => {
+                const finalSelectedPhotosJSON = localStorage.getItem('finalSelectedPhotos');
+                if (finalSelectedPhotosJSON) {
+                    const finalSelectedDataUrls = JSON.parse(finalSelectedPhotosJSON);
+                    
+                    // 4장의 선택된 사진으로 최종 4컷 스트립 이미지 생성
+                    try {
+                        finalImageSrc = await createPhotoStrip(finalSelectedDataUrls);
+                        finalPhotoStrip.src = finalImageSrc;
+                    } catch (error) {
+                        console.error("최종 사진 스트립 생성 실패:", error);
+                        alert("사진을 불러오거나 생성하는 데 실패했습니다.");
+                        finalPhotoStrip.src = "https://placehold.co/285x850?text=Error"; // 에러 이미지
+                    }
+                } else {
+                    alert("선택된 사진이 없습니다. photo2.html에서 다시 선택해주세요.");
+                    finalPhotoStrip.src = "https://placehold.co/285x850?text=No+Photos";
+                }
+            };
+
+            // 4장의 Data URL로 하나의 4컷 스트립 이미지 생성 함수 (photo.html에서 가져옴)
+            async function createPhotoStrip(photosToStrip) {
+                const stripWidth = 285.63; // CSS의 .main-img width와 동일
+                const stripHeight = 850.25; // CSS의 .main-img height와 동일
+                const finalStripCanvas = document.createElement('canvas');
+                finalStripCanvas.width = stripWidth;
+                finalStripCanvas.height = stripHeight;
+                const finalStripCtx = finalStripCanvas.getContext('2d');
+                finalStripCtx.fillStyle = '#FFFFFF'; // 배경색
+                finalStripCtx.fillRect(0, 0, stripWidth, stripHeight);
+
+                const padding = 10; // 이미지와 테두리 간격
+                const imageSpacing = 10; // 이미지 간 간격
+
+                // 4장 이미지 총 높이에서 패딩과 간격을 제외한 순수 이미지 높이 계산
+                const totalImageHeight = stripHeight - (padding * 2) - (imageSpacing * 3);
+                const singleImageHeight = totalImageHeight / 4;
+
+                for (let i = 0; i < photosToStrip.length; i++) {
+                    const img = new Image();
+                    img.src = photosToStrip[i];
+                    await new Promise(resolve => img.onload = resolve);
+
+                    const aspectRatio = img.width / img.height;
+                    let drawWidth = singleImageHeight * aspectRatio;
+                    let drawHeight = singleImageHeight;
+
+                    // 이미지 비율이 너무 다르면 조절 (예: 가로가 너무 길면 높이에 맞추고 너비 자름)
+                    if (drawWidth > stripWidth - (padding * 2)) {
+                        drawWidth = stripWidth - (padding * 2);
+                        drawHeight = drawWidth / aspectRatio;
+                    }
+
+                    const drawX = padding + (stripWidth - (padding * 2) - drawWidth) / 2; // 중앙 정렬
+                    const drawY = padding + (i * (singleImageHeight + imageSpacing)) + (singleImageHeight - drawHeight) / 2; // 중앙 정렬
+                    
+                    finalStripCtx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+                }
+                return finalStripCanvas.toDataURL('image/png');
+            }
+
+            // --- 이벤트 리스너 설정 ---
+
+            // 1. 이미지 다운로드 기능
+            downloadIcon.addEventListener('click', () => {
+                if (!finalImageSrc) {
+                    alert("다운로드할 이미지가 없습니다.");
+                    return;
+                }
+                const link = document.createElement('a');
+                link.href = finalImageSrc;
+                link.download = `cherisnap_photo_strip_${Date.now()}.png`; // 파일명 설정
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                alert("이미지가 다운로드 되었습니다!");
+            });
+
+            // 2. URL 복사 기능
+            urlIcon.addEventListener('click', async () => {
+                if (!finalImageSrc) {
+                    alert("복사할 URL이 없습니다.");
+                    return;
+                }
+                try {
+                    // Data URL이 너무 길 경우 문제가 될 수 있으므로, 실제 서비스에서는 이미지를 서버에 업로드 후 서버 URL을 사용해야 합니다.
+                    await navigator.clipboard.writeText(finalImageSrc);
+                    alert("이미지 URL이 클립보드에 복사되었습니다!");
+                } catch (err) {
+                    console.error('클립보드 복사 실패:', err);
+                    alert("URL 복사에 실패했습니다. 브라우저 설정에서 클립보드 접근을 허용해주세요.");
+                }
+            });
+
+            // 3. 카카오톡 공유 기능
+            kakaoIcon.addEventListener('click', () => {
+                if (!Kakao.isInitialized()) {
+                    alert('카카오톡 SDK가 초기화되지 않았습니다. 개발자 키를 확인해주세요.');
+                    return;
+                }
+                if (!finalImageSrc) {
+                    alert("공유할 이미지가 없습니다.");
+                    return;
+                }
+
+                // IMPORTANT: 카카오톡 공유는 서버에 업로드된 이미지 URL이 필요합니다.
+                // 현재는 Data URL을 사용하므로 실제 작동하지 않습니다.
+                // 이 'https://example.com/your_uploaded_image.png' 부분을 실제 서버에 업로드된 이미지 URL로 교체해야 합니다!
+                const imageUrlForKakao = "https://example.com/your_uploaded_image.png"; 
+                const linkToShare = window.location.href; // 현재 페이지 URL 또는 서비스 랜딩 페이지 URL
+
+                Kakao.Share.sendDefault({
+                    objectType: 'feed',
+                    content: {
+                        title: '나만의 네컷 사진',
+                        description: '체리 스냅에서 만든 특별한 네컷 사진을 공유합니다!',
+                        imageUrl: imageUrlForKakao, 
+                        link: {
+                            mobileWebUrl: linkToShare,
+                            webUrl: linkToShare,
+                        },
+                    },
+                    buttons: [
+                        {
+                            title: '사진 보러가기',
+                            link: {
+                                mobileWebUrl: linkToShare,
+                                webUrl: linkToShare,
+                            },
+                        },
+                    ],
+                });
+            });
+
+            // 페이지 로드 시 최종 사진 불러오기
+            loadFinalPhoto();
+        });
+    </script>
 </body>
 </html>
